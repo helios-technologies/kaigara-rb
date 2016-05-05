@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+lib = File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+modules = File.expand_path('../../modules', __FILE__)
+$LOAD_PATH.unshift(modules) unless $LOAD_PATH.include?(modules)
+
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
+require 'bundler/setup' # Set up gems listed in the Gemfile.
+Bundler.require()
+
+require 'kaigara/application'
+Kaish::Application.start
+
+# vi: set ft=ruby :

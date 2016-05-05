@@ -1,5 +1,4 @@
 require "kaigara/version"
 
-module Kaigara
-  # Your code goes here...
+module Kaish
 end

@@ -1,0 +1,14 @@
+<% if @name -%>
+name '<%= @name -%>'
+<%- end -%>
+
+<% if @version -%>
+version '<%= @version -%>'
+<%- end -%>
+
+dep 'World', source: 'git', version: '1.0.0'
+
+vars do |e|
+  e.hello 'world'
+  e.test '1.2'
+end
