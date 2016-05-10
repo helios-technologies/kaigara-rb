@@ -6,8 +6,6 @@ describe Kaigara do
     before(:all) do
       Dir.mkdir 'tmp'
       Dir.chdir 'tmp'
-      Dir.mkdir Dir.home + '/.kaigara'
-      Dir.mkdir Dir.home + '/.kaigara/pkgops'
       sysops = Kaigara::Sysops.new
       sysops.create
       sysops.generate 'hello'
@@ -36,18 +34,9 @@ describe Kaigara do
       end
     end
 
-    describe 'install' do
-      it 'installs an operation' do
-        pkg = Kaigara::KaigaraPackage.new 'test'
-        pkg.install
-        expect(Dir.entries Dir.home + '/.kaigara/pkgops').to include 'test'
-      end
-    end
-
     after(:all) do
       Dir.chdir '..'
       FileUtils.rm_rf 'tmp'
-      FileUtils.rm_rf Dir.home + '/.kaigara' 
     end
   end
 end
