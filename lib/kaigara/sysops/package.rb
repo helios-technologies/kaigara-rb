@@ -1,10 +1,11 @@
 require_relative 'spec'
 require_relative 'context'
 
-module Kaish
+module Kaigara
   class Package
     include Thor::Base
     include Thor::Actions
+
     source_root File.expand_path('../templates', __FILE__)
 
     METADATA_FILE_NAME = 'metadata.rb'
@@ -19,7 +20,8 @@ module Kaish
     attr_accessor :version
     attr_accessor :name
 
-    def initialize(path = '.')
+    def initialize(path)
+      path ||= '.'
       @options = {}
       @work_dir = File.expand_path(path)
       self.destination_root = @work_dir
@@ -49,7 +51,7 @@ module Kaish
       template('operation.rb.erb', File.join(@operations_dir, "#{prefix}_#{name}.rb"))
     end
 
-    # Execute operations in the +operations_dir+ one by one
+    # Execute operations in the operations directory one by one
     def run!
       Dir[File.join(@operations_dir, '*.rb')].each do |x|
         execute_operation!(x)

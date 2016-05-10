@@ -1,7 +1,7 @@
 require 'kaigara/sysops'
 
-module Kaish
-  class Application < Thor
+module Kaigara
+  class Application < Baseops
     def self.exit_on_failure?
       true
     end
@@ -11,7 +11,8 @@ module Kaish
 
     desc 'version', 'Kaish version'
     def version
-      say KAISH_VERSION
+      say KAIGARA_VERSION
     end
   end
 end
+

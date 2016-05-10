@@ -1,9 +1,8 @@
 require_relative 'sysops/package'
+require_relative 'baseops'
 
-module Kaish
-  class Sysops < Thor
-    include Thor::Actions
-
+module Kaigara
+  class Sysops < Baseops
     no_commands do
       def self.source_root
         File.expand_path('sysops/templates', __FILE__)
