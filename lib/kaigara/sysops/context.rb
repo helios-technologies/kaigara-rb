@@ -1,14 +1,10 @@
 require 'open3'
-module Kaish
-  class Context
-    class ThorShell < Thor
-      include Thor::Base
-      include Thor::Shell
-      include Thor::Actions
+require 'thor'
+require 'kaigara/baseops'
 
-      def self.source_root
-        TPL_PATH
-      end
+module Kaigara
+  class Context
+    class ThorShell < Baseops
 
       no_commands do
         def inject(opts = {})

@@ -3,7 +3,7 @@ require_relative 'environment'
 class Spec
   attr_accessor :environment
   def initialize(parent)
-    @environment = Kaish::Environment.new
+    @environment = Kaigara::Environment.new
     @parent = parent
   end
 

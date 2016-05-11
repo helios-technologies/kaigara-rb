@@ -1,4 +1,4 @@
-module Kaish
+module Kaigara
   class Environment
     attr_accessor :variables
 
@@ -11,3 +11,4 @@ module Kaish
     end
   end
 end
+
