@@ -1,39 +1,54 @@
 require 'spec_helper'
+require 'kaigara/sysops'
 
-describe Kaish do
-  describe 'sysops' do
-    before do
-      system 'mkdir tmp'
-      system 'bin/kaish sysops create -p tmp'
-      system 'bin/kaish sysops generate hello -p tmp'
+describe Kaigara do
+  describe Kaigara::Sysops do
+    before(:all) do
+      Dir.mkdir 'tmp'
+      Dir.chdir 'tmp'
+      Dir.mkdir Dir.home + '/.kaigara'
+      Dir.mkdir Dir.home + '/.kaigara/pkgops'
+      sysops = Kaigara::Sysops.new
+      sysops.create
+      sysops.generate 'hello'
     end
 
-    describe 'sysops create' do
+    describe 'create' do
       it 'creates basic project' do
-        expect(Dir.entries 'tmp').to eq %w(. operations resources Vagrantfile metadata.rb ..)
+        expect(Dir.entries '.').to include("operations", "resources", "Vagrantfile", "metadata.rb")
       end
     end
 
     describe 'generate' do
       it 'creates operations' do
-        File.exist? Dir['tmp/operations/*_hello.rb'].first
+        File.exist? Dir['operations/*_hello.rb'].first
       end
     end
 
-    describe 'sysops exec' do
+    describe 'exec' do
       before do
-        system 'echo "puts \'Hello world!\'" > tmp/operations/*hello.rb'
-        system 'cd tmp && ../bin/kaish sysops exec'
+        File.write(Dir['operations/*_hello.rb'].first, 'print \'Hello world!\'')
       end
 
-      it 'prints \'Hello world!\'' do
-        true
+      it 'executes operations' do
+        sysops = Kaigara::Sysops.new
+        expect { sysops.exec }.to output(/Hello world!/).to_stdout
       end
     end
 
-    after do
-      system 'cd ..'
-      system 'rm -r tmp'
+    describe 'install' do
+      it 'installs an operation' do
+        pkg = Kaigara::KaigaraPackage.new 'test'
+        pkg.install
+        expect(Dir.entries Dir.home + '/.kaigara/pkgops').to include 'test'
+      end
+    end
+
+    after(:all) do
+      Dir.chdir '..'
+      FileUtils.rm_rf 'tmp'
+      FileUtils.rm_rf Dir.home + '/.kaigara' 
     end
   end
 end
+
