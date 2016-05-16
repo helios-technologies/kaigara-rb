@@ -1,7 +1,5 @@
-require 'kaigara/sysops'
-
 module Kaigara
-  class Application < Baseops
+  class Application < Thor
     def self.exit_on_failure?
       true
     end

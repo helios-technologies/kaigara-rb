@@ -1,6 +1,4 @@
 require 'open3'
-require 'thor'
-require 'kaigara/baseops'
 
 module Kaigara
   class Context

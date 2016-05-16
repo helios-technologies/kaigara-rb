@@ -1,11 +1,12 @@
 require 'spec_helper'
-require 'kaigara/sysops'
 
 describe Kaigara do
   describe Kaigara::Sysops do
     before(:all) do
       Dir.mkdir 'tmp'
       Dir.chdir 'tmp'
+      Dir.mkdir Dir.home + '/.kaigara'
+      Dir.mkdir Dir.home + '/.kaigara/pkgops'
       sysops = Kaigara::Sysops.new
       sysops.create
       sysops.generate 'hello'
@@ -28,15 +29,24 @@ describe Kaigara do
         File.write(Dir['operations/*_hello.rb'].first, 'print \'Hello world!\'')
       end
 
-      it 'prints \'Hello world!\'' do
+      it 'executes operations' do
         sysops = Kaigara::Sysops.new
         expect { sysops.exec }.to output(/Hello world!/).to_stdout
+      end
+    end
+
+    describe 'install' do
+      it 'installs an operation' do
+        pkg = Kaigara::KaigaraPackage.new 'test'
+        pkg.install
+        expect(Dir.entries Dir.home + '/.kaigara/pkgops').to include 'test'
       end
     end
 
     after(:all) do
       Dir.chdir '..'
       FileUtils.rm_rf 'tmp'
+      FileUtils.rm_rf Dir.home + '/.kaigara' 
     end
   end
 end
