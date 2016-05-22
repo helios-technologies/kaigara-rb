@@ -32,7 +32,7 @@ module Kaigara
     method_option :path, aliases: '-p', desc: 'Project path', default: '.'
     def exec
       package = Package.new(options[:path])
-      say "Executing #{package.name}#{"/#{package.version}" if package.version}...", :yellow
+      say "Executing #{package.name}%s..." % [package.version ? "/#{package.version}" : ""], :yellow
       package.load!
       package.run!
     end
@@ -41,7 +41,7 @@ module Kaigara
     def install(name)
       pkg = KaigaraPackage.new(name)
       begin
-        config = YAML.load_file(File.dirname(__FILE__) + '/../../kaigara.yml')
+        config = YAML.load_file(resource('kaigara.yml'))
         pkg.read_config! config
       rescue Exception => ex
         say("Failed to load node configuration! #{ex}", :red)

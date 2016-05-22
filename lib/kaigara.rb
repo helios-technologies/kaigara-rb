@@ -1,4 +1,3 @@
-
 require 'thor'
 
 app_path = File.expand_path('../../app', __FILE__)
