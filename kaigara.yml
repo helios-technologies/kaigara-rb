@@ -1,0 +1,11 @@
+default: &default
+  operation:
+    package_repository: github.com/%s/%s.git
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
