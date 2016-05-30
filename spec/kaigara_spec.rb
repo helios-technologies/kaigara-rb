@@ -8,7 +8,8 @@ describe Kaigara do
       Dir.mkdir Dir.home + '/.kaigara'
       Dir.mkdir Dir.home + '/.kaigara/pkgops'
       sysops = Kaigara::Sysops.new
-      sysops.create
+      sysops.create 'Hello'
+      Dir.chdir 'Hello'
       sysops.generate 'hello'
     end
 
@@ -44,7 +45,7 @@ describe Kaigara do
     end
 
     after(:all) do
-      Dir.chdir '..'
+      Dir.chdir '../..'
       FileUtils.rm_rf 'tmp'
       FileUtils.rm_rf Dir.home + '/.kaigara' 
     end

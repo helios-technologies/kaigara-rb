@@ -1,16 +1,12 @@
+
+require 'pathname'
+
 module Kaigara
-  class Application < Thor
-    def self.exit_on_failure?
-      true
+  class Application
+
+    def self.root
+      Pathname.new(File.expand_path('../../..', __FILE__))
     end
 
-    desc 'sysops COMMAND ARGS', 'System operations'
-    subcommand 'sysops', Sysops
-
-    desc 'version', 'Kaish version'
-    def version
-      say KAIGARA_VERSION
-    end
   end
 end
-
