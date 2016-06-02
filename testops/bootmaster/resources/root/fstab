@@ -1,0 +1,9 @@
+# /etc/fstab: static file system information.
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+proc            /proc           proc    defaults        0       0
+/dev/nfs        /               nfs     defaults        0       0
+none            /tmp            tmpfs   defaults        0       0
+none            /var/run        tmpfs   defaults        0       0
+none            /var/lock       tmpfs   defaults        0       0
+none            /var/tmp        tmpfs   defaults        0       0

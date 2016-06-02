@@ -1,0 +1,6 @@
+TIMEOUT 10
+DEFAULT linux
+
+LABEL linux
+KERNEL vmlinuz
+APPEND boot=nfs root=/dev/nfs initrd=initrd.img nfsroot=10.64.4.10:/srv/nfsroot/ubuntu/trusty,rw ip=dhcp

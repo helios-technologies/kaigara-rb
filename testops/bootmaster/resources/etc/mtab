@@ -1,0 +1,1 @@
+etc /etc vboxsf uid=1000,gid=1000,rw 0 0

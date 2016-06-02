@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -xe
+
+chroot <%= OS_PATH %> ./root/chroot-install.sh
+
+cd <%= OS_PATH %>/boot
+INITRD=$(ls initrd.img-*-generic)
+VMLINUZ=$(ls vmlinuz-*-generic)
+chmod 644 $VMLINUZ
+
+cd /srv/tftpboot/
+ln -sf <%= OS_PATH %>/boot/$INITRD initrd.img
+ln -sf <%= OS_PATH %>/boot/$VMLINUZ vmlinuz

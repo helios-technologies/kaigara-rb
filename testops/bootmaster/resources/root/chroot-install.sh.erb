@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -xe
+
+DEBIAN_FRONTEND=noninteractive
+
+cp /usr/share/zoneinfo/Europe/Paris /etc/localtime
+echo 'LANG="en_US.UTF-8"' >  /etc/default/locale
+echo 'Europe/Paris' > /etc/timezone
+locale-gen 'en_US.UTF-8'
+dpkg-reconfigure -f non-interactive tzdata
+
+apt-get update
+apt-get install -y linux-image-generic-lts-$OS_VERSION
+apt-get install -y initramfs-tools
+apt-get upgrade -y
+
+sed -i.bak 's/BOOT=local/BOOT=nfs/' /etc/initramfs-tools/initramfs.conf
+sed -i.bak 's/MODULES=most/MODULES=netboot/' /etc/initramfs-tools/initramfs.conf
+
+echo '
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp' >> /etc/network/interfaces
+
+
+update-initramfs -u

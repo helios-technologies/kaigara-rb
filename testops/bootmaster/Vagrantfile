@@ -1,0 +1,16 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.network "private_network", ip: "10.64.4.10"
+
+  config.vm.synced_folder "resources/kaigara", "/kaigara", create: true
+
+  config.vm.provision "shell",
+                       path: "https://gist.githubusercontent.com/D1reCT/a13273ffd4020b5d11c3cb32848c744c/raw/bee372af137b76ff811f02660b48377c8dc8f267/install-rvm.sh", args: "stable"
+  config.vm.provision "shell",
+                       path: "https://gist.githubusercontent.com/D1reCT/5c630b7a7a058bd5b586b966fad59ed3/raw/d028c5a268804984f4a20e1822dbce2003630750/install-ruby.sh",
+                       args: "2.3.0 thor"
+
+  config.vm.provision "shell", inline: 'ruby -v;/kaigara/bin/kaish sysops exec -p /vagrant'
+end

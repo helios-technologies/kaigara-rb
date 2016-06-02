@@ -1,0 +1,1 @@
+{"virtualbox":{"/kaigara":{"create":true,"guestpath":"/kaigara","hostpath":"/home/dima/work/bootmaster/resources/kaigara","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/dima/work/bootmaster","disabled":false,"__vagrantfile":true}}}
