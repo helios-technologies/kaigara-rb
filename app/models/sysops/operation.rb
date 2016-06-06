@@ -1,7 +1,7 @@
 require 'open3'
 
 module Kaigara
-  class Context
+  class Operation
     class ThorShell
 
       include Thor::Base
@@ -43,19 +43,25 @@ module Kaigara
       stderr.close
 
       exit_status = wait_thr.value
-      raise 'Non zero result' if exit_status != 0
+      raise 'Non zero result' unless exit_status.to_i.zero?
     end
 
     def template(name, target = nil)
+      @environment.load_metadata
+
       tpl_file = name + '.erb'
       destination = target
-      destination = "/#{tpl_file}" if destination.nil?
-      destination.gsub!(/\.erb$/,'')
+      destination = "#{tpl_file}" if destination.nil?
+      destination.gsub!(/\.erb$/, '')
 
       @shell.say "Rendering template #{tpl_file} to #{destination}", :yellow
-      @shell.inject(@environment.variables)
       ThorShell.source_root(File.join(@work_dir, 'resources'))
       @shell.template(tpl_file, destination)
+    end
+
+    def script(name)
+      template name
+      execute "sh #{name}"
     end
   end
 end

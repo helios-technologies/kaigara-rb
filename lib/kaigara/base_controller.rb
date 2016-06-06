@@ -10,7 +10,7 @@ module Kaigara
       end
 
       def render(source, destination = nil)
-        template(source + '.erb')
+        template(source, destination)
       end
 
       def in_destination(path, &block)
