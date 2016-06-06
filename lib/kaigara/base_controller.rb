@@ -4,13 +4,15 @@ module Kaigara
     include Thor::Actions
     include Thor::Shell
 
+    RESOURCES_PATH = File.expand_path(File.join(File.dirname(__FILE__), "../../resources/"))
+
     no_commands do
       def self.source_root
         Application.root.join('app','templates','sysops')
       end
 
       def render(source, destination = nil)
-        template(source + '.erb')
+        template(source, destination)
       end
 
       def in_destination(path, &block)
@@ -19,6 +21,10 @@ module Kaigara
         p destination_root
         block.call
         destination_root = previous_path
+      end
+
+      def resource(name)
+        File.join(RESOURCES_PATH, name)
       end
     end
 

@@ -1,5 +1,5 @@
 require_relative 'spec'
-require_relative 'context'
+require_relative 'operation'
 
 module Kaigara
   class Package
@@ -46,10 +46,10 @@ module Kaigara
     end
 
     def execute_operation!(path)
-      context = Context.new path
-      context.work_dir = @work_dir
-      context.environment = @spec.environment
-      context.apply!
+      operation = Operation.new path
+      operation.work_dir = @work_dir
+      operation.environment = @spec.environment
+      operation.apply!
     end
   end
 end
