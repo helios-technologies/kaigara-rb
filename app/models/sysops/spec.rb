@@ -1,6 +1,9 @@
 require_relative 'environment'
+require_relative 'config'
 
 class Spec
+  include Kaigara::Config
+
   attr_accessor :environment
   def initialize(parent)
     @environment = Kaigara::Environment.new

@@ -14,19 +14,5 @@ Vagrant.configure(2) do |config|
   <%- else -%>
   config.vm.hostname = "vm"
   <%- end -%>
-
-  #  config.berkshelf.enabled = true
-  #  node_json = JSON.parse(Pathname(__FILE__).dirname.join('nodes', 'rails.json').read)
-  #  config.vm.provision :chef_solo do |chef|
-  #    chef.node_name = "rails"
-  #    chef.nodes_path = "./nodes"
-  #    chef.environments_path = "./environments"
-  #    chef.cookbooks_path = "./cookbooks"
-  #    chef.data_bags_path = "./data_bags"
-  #    chef.provisioning_path = "/tmp/vagrant-chef"
-  #    chef.run_list = node_json.delete('run_list') if node_json['run_list']
-  #    chef.json = node_json
-  #  end
-
 end
 

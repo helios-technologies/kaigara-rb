@@ -1,9 +1,13 @@
+require_relative 'config'
 require 'open3'
 
 module Kaigara
   class Operation
-    class ThorShell
 
+  include Kaigara::Config
+
+    class ThorShell
+ 
       include Thor::Base
       include Thor::Actions
       include Thor::Shell
@@ -29,11 +33,13 @@ module Kaigara
     end
 
     def apply!
+      Environment.load_variables
       @shell.say "Applying #{@name}\n--------------------", :yellow
       instance_eval @content
     end
 
     def execute(cmd)
+      Environment.load_variables
       @shell.say "Running: #{cmd}", :yellow
       stdin, stdout, stderr, wait_thr = Open3.popen3(@environment.variables, cmd)
       @shell.say stdout.read(), :green
@@ -47,11 +53,10 @@ module Kaigara
     end
 
     def template(name, target = nil)
-      @environment.load_metadata
-
+      Environment.load_variables
       tpl_file = name + '.erb'
       destination = target
-      destination = "#{tpl_file}" if destination.nil?
+      destination = "/#{tpl_file}" if destination.nil?
       destination.gsub!(/\.erb$/, '')
 
       @shell.say "Rendering template #{tpl_file} to #{destination}", :yellow
