@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Kaigara do
   describe Kaigara::Sysops do
-    before(:all) do
+    before(:each) do
       Dir.mkdir 'tmp'
       Dir.chdir 'tmp'
       Dir.mkdir Dir.home + '/.kaigara'
@@ -44,7 +44,31 @@ describe Kaigara do
       end
     end
 
-    after(:all) do
+    describe 'script' do
+      before(:each) do
+        template = 'resources/script.sh.erb'
+        FileUtils.touch(template)
+        File.write(template, "echo 'hello, kaigara!'")
+        File.write(Dir['operations/*_hello.rb'].first, "script('script.sh', 'resources/')")
+        sysops = Kaigara::Sysops.new
+        sysops.exec
+      end
+
+      it 'renders the template' do
+        expect(File.read('resources/script.sh')).to match(/echo 'hello, kaigara!'/)
+      end
+
+      it 'makes the script executable' do
+        expect(File.stat('resources/script.sh').executable?).to be true
+      end
+
+      it 'executes the script' do
+        sysops = Kaigara::Sysops.new
+        expect { sysops.exec }.to output(/hello, kaigara!/).to_stdout
+      end
+    end
+
+    after(:each) do
       Dir.chdir '../..'
       FileUtils.rm_rf 'tmp'
       FileUtils.rm_rf Dir.home + '/.kaigara' 

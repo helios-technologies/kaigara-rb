@@ -56,6 +56,15 @@ module Kaigara
       @shell.inject(@environment.variables)
       ThorShell.source_root(File.join(@work_dir, 'resources'))
       @shell.template(tpl_file, destination)
+
+      return destination
+    end
+
+    def script(name, path = nil)
+      target = template(name, File.join( (path.nil? ? "" : path), name))
+      FileUtils.chmod(0755, target)
+      target.prepend('./') unless target.match(/^\//)
+      execute("#{target}")
     end
   end
 end
