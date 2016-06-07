@@ -1,5 +1,5 @@
 require_relative 'spec'
-require_relative 'context'
+require_relative 'operation'
 
 module Kaigara
   class Package
@@ -19,7 +19,6 @@ module Kaigara
     def initialize(path = '.')
       @options = {}
       @work_dir = path ? File.expand_path(path) : '.'
-      #self.destination_root = @work_dir
 
       @operations_dir = File.join(@work_dir, OPERATIONS_DIR_NAME)
       @script_path = File.expand_path(File.join(@work_dir, METADATA_FILE_NAME))
@@ -46,7 +45,7 @@ module Kaigara
     end
 
     def execute_operation!(path)
-      context = Context.new path
+      context = Operation.new path
       context.work_dir = @work_dir
       context.environment = @spec.environment
       context.apply!

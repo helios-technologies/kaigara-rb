@@ -12,10 +12,6 @@ module Kaigara
       empty_directory(name)
       empty_directory(File.join(name, 'operations'))
       empty_directory(File.join(name, 'resources'))
-      #in_destination(name) do
-      #  render('metadata.rb')
-      #  render('Vagrantfile')
-      #end
       template('metadata.rb.erb', File.join(name, 'metadata.rb'))
       template('Vagrantfile.erb', File.join(name, 'Vagrantfile'))
     end
@@ -40,12 +36,6 @@ module Kaigara
     desc 'install <(github login)/(operation name)>', 'Install a kaigara operation'
     def install(name)
       pkg = KaigaraPackage.new(name)
-      begin
-        config = YAML.load_file(File.dirname(__FILE__) + '/../../kaigara.yml')
-        pkg.read_config! config
-      rescue Exception => ex
-        say("Failed to load node configuration! #{ex}", :red)
-      end
 
       if pkg.is_installed?
         say('The package is already installed', :green)

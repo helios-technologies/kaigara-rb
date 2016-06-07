@@ -1,7 +1,7 @@
 require 'open3'
 
 module Kaigara
-  class Context
+  class Operation
     class ThorShell
 
       include Thor::Base
