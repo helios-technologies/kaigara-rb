@@ -3,7 +3,6 @@ require 'open3'
 module Kaigara
   class Operation
     class ThorShell
-
       include Thor::Base
       include Thor::Actions
       include Thor::Shell
@@ -17,6 +16,8 @@ module Kaigara
         end
       end
     end
+    
+    include Thor::Actions
 
     attr_accessor :work_dir
     attr_accessor :name
@@ -36,7 +37,7 @@ module Kaigara
     def execute(cmd)
       Environment.load_variables
       @shell.say "Running: #{cmd}", :yellow
-      stdin, stdout, stderr, wait_thr = Open3.popen3(@environment.variables, cmd)
+      stdin, stdout, stderr, wait_thr = Open3.popen3({}, cmd)
       @shell.say stdout.read(), :green
       @shell.say stderr.read(), :red
       stdin.close
@@ -55,7 +56,6 @@ module Kaigara
       destination.gsub!(/\.erb$/,'')
 
       @shell.say "Rendering template #{tpl_file} to #{destination}", :yellow
-      @shell.inject(@environment.variables)
       ThorShell.source_root(File.join(@work_dir, 'resources'))
       @shell.template(tpl_file, destination)
 

@@ -22,9 +22,5 @@ class Spec
       source: source
     }
   end
-
-  def vars
-    yield environment
-  end
 end
 
