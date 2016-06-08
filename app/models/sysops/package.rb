@@ -1,5 +1,6 @@
 require_relative 'spec'
 require_relative 'operation'
+require_relative 'config'
 
 module Kaigara
   class Package

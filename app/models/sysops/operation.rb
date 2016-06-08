@@ -34,6 +34,7 @@ module Kaigara
     end
 
     def execute(cmd)
+      Environment.load_variables
       @shell.say "Running: #{cmd}", :yellow
       stdin, stdout, stderr, wait_thr = Open3.popen3(@environment.variables, cmd)
       @shell.say stdout.read(), :green
@@ -47,6 +48,7 @@ module Kaigara
     end
 
     def template(name, target = nil)
+      Environment.load_variables
       tpl_file = name + '.erb'
       destination = target
       destination = "/#{tpl_file}" if destination.nil?

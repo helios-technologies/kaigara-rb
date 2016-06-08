@@ -1,8 +1,3 @@
-<% if @name -%>
-name '<%= @name -%>'
-<%- end -%>
-
-<% if @version -%>
-version '<%= @version -%>'
-<%- end -%>
-
+Kaigara::Config.vars do |c|
+  c.vagrant.home = '/vagrant'
+end

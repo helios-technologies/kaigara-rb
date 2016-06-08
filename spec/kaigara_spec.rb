@@ -47,7 +47,6 @@ describe Kaigara do
     describe 'script' do
       before(:each) do
         template = 'resources/script.sh.erb'
-        FileUtils.touch(template)
         File.write(template, "echo 'hello, kaigara!'")
         File.write(Dir['operations/*_hello.rb'].first, "script('script.sh', 'resources/')")
         sysops = Kaigara::Sysops.new
@@ -66,12 +65,19 @@ describe Kaigara do
         sysops = Kaigara::Sysops.new
         expect { sysops.exec }.to output(/hello, kaigara!/).to_stdout
       end
+
+      it 'uses variables from metadata.rb' do
+        FileUtils.rm 'resources/script.sh'
+        sysops = Kaigara::Sysops.new
+        File.write('resources/script.sh.erb', "echo '<%= vagrant.home %>'")
+        expect { sysops.exec }.to output(/vagrant/).to_stdout
+      end
     end
 
     after(:each) do
       Dir.chdir '../..'
       FileUtils.rm_rf 'tmp'
-      FileUtils.rm_rf Dir.home + '/.kaigara' 
+      FileUtils.rm_rf Dir.home + '/.kaigara'
     end
   end
 end
