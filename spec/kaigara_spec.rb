@@ -1,54 +1,78 @@
 require 'spec_helper'
 
 describe Kaigara do
+  before(:each) do
+    @sysops = Kaigara::Sysops.new
+    @refops = 'spec/refops'
+  end
+
   describe Kaigara::Sysops do
     before(:all) do
-      Dir.mkdir 'tmp'
-      Dir.chdir 'tmp'
-      Dir.mkdir Dir.home + '/.kaigara'
-      Dir.mkdir Dir.home + '/.kaigara/pkgops'
-      sysops = Kaigara::Sysops.new
-      sysops.create 'Hello'
-      Dir.chdir 'Hello'
-      sysops.generate 'hello'
+      @src_home = Dir.pwd
     end
 
     describe 'create' do
+      before do
+        @sysops.create 'testops'
+      end
+
       it 'creates basic project' do
-        expect(Dir.entries '.').to include("operations", "resources", "Vagrantfile", "metadata.rb")
+        expect(Dir.entries 'testops').to include("operations", "resources", "Vagrantfile", "metadata.rb")
       end
     end
 
     describe 'generate' do
+      before do
+        Dir.chdir 'testops'
+        @sysops.generate 'print'
+      end
+
       it 'creates operations' do
-        File.exist? Dir['operations/*_hello.rb'].first
+        File.exist? Dir["operations/*_print.rb"].first
       end
     end
 
     describe 'exec' do
       before do
-        File.write(Dir['operations/*_hello.rb'].first, 'print \'Hello world!\'')
+        File.write(Dir["operations/*_print.rb"].first, "print 'hello, kaigara!'")
       end
 
       it 'executes operations' do
-        sysops = Kaigara::Sysops.new
-        expect { sysops.exec }.to output(/Hello world!/).to_stdout
+        expect { @sysops.exec }.to output(/hello, kaigara!/).to_stdout
+      end
+
+      after do
+        Dir.chdir(@src_home)
+        FileUtils.rm_r 'testops'
       end
     end
 
-    describe 'install' do
-      it 'installs an operation' do
-        pkg = Kaigara::KaigaraPackage.new 'test'
-        pkg.install
-        expect(Dir.entries Dir.home + '/.kaigara/pkgops').to include 'test'
+    describe 'script' do
+      before do
+        Dir.chdir 'spec/refops' unless Dir.pwd.include? 'spec'
+        @sysops.exec
       end
-    end
 
-    after(:all) do
-      Dir.chdir '../..'
-      FileUtils.rm_rf 'tmp'
-      FileUtils.rm_rf Dir.home + '/.kaigara' 
+      it 'renders the template' do
+        expect(File.read("resources/script.sh")).to match(/echo '\/vagrant'/)
+      end
+
+      it 'makes the script executable' do
+        expect(File.stat('resources/script.sh').executable?).to be true
+      end
+
+      it 'executes the script' do
+        expect { @sysops.exec }.to output(/into shell script/).to_stdout
+      end
+
+      it 'uses variables from metadata.rb' do
+        FileUtils.rm 'resources/script.sh'
+        expect { @sysops.exec }.to output(/vagrant/).to_stdout
+      end
+      
+      after(:each) do
+        FileUtils.rm "resources/script.sh"
+      end
     end
   end
 end
-
