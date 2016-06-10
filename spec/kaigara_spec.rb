@@ -65,11 +65,6 @@ describe Kaigara do
         expect { @sysops.exec }.to output(/into shell script/).to_stdout
       end
 
-      it 'uses variables from metadata.rb' do
-        FileUtils.rm 'resources/script.sh'
-        expect { @sysops.exec }.to output(/vagrant/).to_stdout
-      end
-      
       after(:each) do
         FileUtils.rm "resources/script.sh"
       end

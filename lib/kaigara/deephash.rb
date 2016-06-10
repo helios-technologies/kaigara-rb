@@ -9,7 +9,7 @@ module Kaigara
       elsif !has_key?(name)
         self[name] = DeepHash.new
       end
-      return self[name] 
+      return self[name]
     end
   end
 end

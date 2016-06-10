@@ -1,6 +1,6 @@
 require_relative 'spec'
 require_relative 'operation'
-require_relative 'metadata'
+require 'kaigara/metadata'
 
 module Kaigara
   class Package
