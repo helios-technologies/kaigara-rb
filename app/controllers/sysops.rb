@@ -1,5 +1,7 @@
 require 'models/sysops/package'
-require 'models/sysops/kaigara_package'
+require 'models/sysops/operation'
+require 'models/sysops/environment'
+require 'models/sysops/spec'
 
 module Kaigara
   class Sysops < BaseController
@@ -31,18 +33,6 @@ module Kaigara
       say "Executing #{package.name}#{"/#{package.version}" if package.version}...", :yellow
       package.load!
       package.run!
-    end
-
-    desc 'install <(github login)/(operation name)>', 'Install a kaigara operation'
-    def install(name)
-      pkg = KaigaraPackage.new(name)
-
-      if pkg.is_installed?
-        say('The package is already installed', :green)
-      else
-        say("Installing #{name}...")
-        pkg.install()
-      end
     end
   end
 end

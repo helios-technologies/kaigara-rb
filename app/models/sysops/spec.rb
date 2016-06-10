@@ -1,5 +1,3 @@
-require_relative 'environment'
-
 class Spec
   attr_accessor :environment
   def initialize(parent)
