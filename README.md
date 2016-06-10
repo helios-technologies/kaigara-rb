@@ -22,9 +22,6 @@ Or install it yourself as:
 
 Basic commands are
 ```
-# Prepare ruby runtime on a remote host
-$> kaish remote bootstrap USER@SERVER
-
 # Creates a system operation package (sysops)
 $> kaish sysops create NAME
 
@@ -33,12 +30,6 @@ $> kaish sysops generate NAME
 
 # Execute all operations of the current working directory
 $> kaish sysops exec [DIRECTORY]
-
-# Install a kaigara sysops package from github or a private git repository
-$> kaish sysops install USER/NAME
-
-# list all kaigara sysops package located in ~/.kaigara/sysops
-$> kaish sysops list
 ```
 
 You can use `kaish help` any time to get help.
