@@ -16,7 +16,7 @@ module Kaigara
         end
       end
     end
-    
+
     attr_accessor :work_dir
     attr_accessor :name
     attr_accessor :environment

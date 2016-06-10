@@ -1,7 +1,3 @@
-require_relative 'spec'
-require_relative 'operation'
-require_relative 'metadata'
-
 module Kaigara
   class Package
 

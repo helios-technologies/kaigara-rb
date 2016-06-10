@@ -1,4 +1,3 @@
-
 require 'thor'
 
 app_path = File.expand_path('../../app', __FILE__)
@@ -10,3 +9,4 @@ require 'kaigara/application'
 
 require 'controllers/sysops'
 require 'kaigara/client'
+require 'kaigara/metadata'
