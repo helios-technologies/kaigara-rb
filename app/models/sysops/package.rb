@@ -13,6 +13,8 @@ module Kaigara
     attr_accessor :version
     attr_accessor :name
 
+    class MetadataNotFound < RuntimeError; end
+
     def initialize(path = '.')
       @options = {}
       @work_dir = path ? File.expand_path(path) : '.'
@@ -22,8 +24,13 @@ module Kaigara
       @spec = Spec.new(self)
     end
 
+    def full_name
+      @full_name ||= [name, version].compact.join("/")
+    end
+
     # Read and execute metadata.rb
     def load!
+      raise MetadataNotFound.new unless File.exist?(@script_path)
       script = File.read(@script_path)
       @spec.instance_eval(script)
     end
@@ -49,4 +56,3 @@ module Kaigara
     end
   end
 end
-

@@ -24,13 +24,18 @@ module Kaigara
       package.load!
       filename = File.join(package.operations_dir, package.operation_name(label))
       template('operation.rb.erb', filename)
+
+    rescue Package::MetadataNotFound
+      say "#{package.script_path} not found", :red
+      say "You may want to create a new sysops project first"
+      exit 1
     end
 
     desc 'exec', 'Execute a package'
     method_option :path, aliases: '-p', desc: 'Project path', default: '.'
     def exec
       package = Package.new(options[:path])
-      say "Executing #{package.name}#{"/#{package.version}" if package.version}...", :yellow
+      say "Executing #{package.full_name}...", :yellow
       package.load!
       package.run!
     end
