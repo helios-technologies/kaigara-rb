@@ -1,4 +1,8 @@
+require 'fileutils'
+
 require 'kaigara'
+
+KAIGARA_GEMPATH = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
 RSpec.configure do |config|
   config.before(:all, &:silence_output)

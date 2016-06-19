@@ -40,14 +40,18 @@ module Kaigara
       Environment.load_variables
       @shell.say "Running: #{cmd}", :yellow
       stdin, stdout, stderr, wait_thr = Open3.popen3({}, cmd)
-      @shell.say stdout.read(), :green
-      @shell.say stderr.read(), :red
-      stdin.close
-      stdout.close
+      Thread.new do
+        stdout.each { |l| @shell.say(l, :green) }
+      end
+      Thread.new do
+        stderr.each { |l| @shell.say(l, :red) }
+      end
       stderr.close
 
       exit_status = wait_thr.value
-      raise 'Non zero result' if exit_status != 0
+      if exit_status != 0
+        raise "Command #{ cmd } returned status code #{ exit_status }"
+      end
     end
 
     #
