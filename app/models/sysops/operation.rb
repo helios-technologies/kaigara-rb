@@ -50,7 +50,7 @@ module Kaigara
 
       exit_status = wait_thr.value
       if exit_status != 0
-        raise "Command #{ cmd } returned status code #{ exit_status }"
+        raise "Command `#{ cmd }` returned status code #{ exit_status }"
       end
     end
 
