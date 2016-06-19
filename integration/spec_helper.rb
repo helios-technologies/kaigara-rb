@@ -16,7 +16,7 @@ def exec_in_container(os)
     stderr.each { |l| STDERR.puts l }
   end
   stdin.close
-  exit_status = wait_thr.value
+  exit_status = wait_thr.value.exitstatus
   if exit_status != 0
     raise "Command #{ cmd } returned status code #{ exit_status }"
   end
