@@ -1,24 +1,7 @@
 require_relative "spec_helper"
 
-describe "sysops exec" do
+describe "operations on any OS" do
   let(:sysops) { Kaigara::Sysops.new }
-
-  def exec_in_container(os)
-    cmd = "docker run -v #{KAIGARA_GEMPATH}:/root:ro --rm heliostech/kaigara:#{os} bash -c 'cd testops && ../bin/kaish sysops exec'"
-    puts "Running: #{ cmd }"
-    stdin, stdout, stderr, wait_thr = Open3.popen3({}, cmd)
-    Thread.new do
-      stdout.each { |l| puts l }
-    end
-    Thread.new do
-      stderr.each { |l| STDERR.puts l }
-    end
-    stdin.close
-    exit_status = wait_thr.value
-    if exit_status != 0
-      raise "Command #{ cmd } returned status code #{ exit_status }"
-    end
-  end
 
   describe 'exec' do
     before do
@@ -26,7 +9,7 @@ describe "sysops exec" do
       @old_pwd = Dir.pwd
       Dir.chdir 'testops'
 
-      File.write("operations/001_print.rb", <<EOF
+      File.write("operations/001_install_packages.rb", <<EOF
 debian_family? do
   execute("echo This is a debian or ubuntu")
 end
@@ -40,7 +23,6 @@ package_update
 package("htop")
 EOF
                 )
-
     end
 
     after do
