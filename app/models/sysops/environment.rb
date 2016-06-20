@@ -1,12 +1,13 @@
 module Kaigara
   class Environment
-    def self.load_variables()
-      package = Package.new
-      @vars = package.load!
+    attr_accessor :vars
+
+    def self.load_variables(op)
+      pkg = Package.new
+      @vars = pkg.load!
       @vars.data.each_pair do |k, v|
-        Operation.send(:define_method, k.to_sym, Proc.new {v})
-        Operation::ThorShell.send(:define_method, k.to_sym, Proc.new {v})
-      end unless @vars.empty?
+        op.instance_variable_set("@#{k}".to_sym, v)
+      end if @vars
     end
   end
 end
