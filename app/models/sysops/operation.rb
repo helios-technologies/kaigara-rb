@@ -6,15 +6,6 @@ module Kaigara
       include Thor::Base
       include Thor::Actions
       include Thor::Shell
-
-      no_commands do
-        def inject(opts = {})
-          opts.each do |k,v|
-            instance_eval { class << self; self end }.send(:attr_accessor, k)
-            send("#{k}=", v)
-          end
-        end
-      end
     end
 
     attr_accessor :work_dir
@@ -25,6 +16,8 @@ module Kaigara
       @shell = ThorShell.new
       @name = File.basename(path)
       @content = File.read(path)
+      Environment.load_variables(self)
+      Environment.load_variables(@shell)
     end
 
     def apply!
@@ -33,7 +26,6 @@ module Kaigara
     end
 
     def execute(cmd)
-      Environment.load_variables
       @shell.say "Running: #{cmd}", :yellow
       stdin, stdout, stderr, wait_thr = Open3.popen3({}, cmd)
       @shell.say stdout.read(), :green
@@ -47,7 +39,6 @@ module Kaigara
     end
 
     def template(name, target = nil)
-      Environment.load_variables
       tpl_file = name + '.erb'
       destination = target
       destination = "/#{tpl_file}" if destination.nil?
