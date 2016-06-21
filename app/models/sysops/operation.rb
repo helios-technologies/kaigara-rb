@@ -6,19 +6,6 @@ module Kaigara
       include Thor::Base
       include Thor::Actions
       include Thor::Shell
-
-      #
-      # What??
-      # TODO: add a comment
-      #
-      no_commands do
-        def inject(opts = {})
-          opts.each do |k,v|
-            instance_eval { class << self; self end }.send(:attr_accessor, k)
-            send("#{k}=", v)
-          end
-        end
-      end
     end
 
     attr_accessor :work_dir
