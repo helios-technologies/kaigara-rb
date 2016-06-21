@@ -3,7 +3,6 @@ require 'fileutils'
 require 'kaigara'
 
 FIXTURES_PATH = File.expand_path(File.join(File.dirname(__FILE__), 'fixtures'))
-KAIGARA_GEMPATH = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
 RSpec.configure do |config|
   config.before(:all, &:silence_output)

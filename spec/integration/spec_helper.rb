@@ -3,7 +3,7 @@ require 'open3'
 
 require 'kaigara'
 
-KAIGARA_GEMPATH = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+KAIGARA_GEMPATH = File.expand_path(File.join(File.dirname(__FILE__), '../..'))
 
 def exec_in_container(os)
   cmd = "docker run -v #{KAIGARA_GEMPATH}:/root:ro --rm heliostech/kaigara:#{os} bash -c 'cd testops && ../bin/kaish sysops exec'"
