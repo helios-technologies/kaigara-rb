@@ -1,14 +1,21 @@
 module Kaigara
   class Package
 
+    #
+    # The base project files and directories
+    #
     METADATA_FILE_NAME = 'metadata.rb'
     VAGRANT_FILE_NAME = 'Vagrantfile'
     OPERATIONS_DIR_NAME = 'operations'
     RESOURCES_DIR_NAME = 'resources'
 
+    # Project directory
     attr_accessor :work_dir
-    attr_accessor :operations_dir
+
+    # metadata.rb path
     attr_accessor :script_path
+
+    attr_accessor :operations_dir
     attr_accessor :dependencies
     attr_accessor :version
     attr_accessor :name

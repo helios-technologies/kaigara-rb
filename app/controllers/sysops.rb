@@ -4,9 +4,20 @@ require 'models/sysops/environment'
 require 'models/sysops/spec'
 
 module Kaigara
+
+  #
+  # A plugin to manage system operations
+  #
   class Sysops < BaseController
 
     desc 'create NAME', 'Create a new sysops project'
+    #
+    # Creates an folder with kaigara project. It includes:
+    # * +operations/+ - directory for future kaigara scripts
+    # * +resources/+ - directory for any sources (scripts to template, etc.)
+    # * +metadata.rb+ - file where you should store all your variables (including environment)
+    # * +Vagrantfile+ - if you use Vagrant, you know what is it
+    #
     def create(name)
       package = Package.new(name)
       package.name = name
@@ -19,6 +30,9 @@ module Kaigara
     end
 
     desc 'generate <name>', 'Generate a new operation'
+    #
+    # Generates new kaigara script in +operations/+ dir. You can use any ruby code in it.
+    #
     def generate(label)
       package = Package.new
       package.load!
@@ -33,6 +47,10 @@ module Kaigara
 
     desc 'exec', 'Execute a package'
     method_option :path, aliases: '-p', desc: 'Project path', default: '.'
+    #
+    # Executes every script in +operations/+
+    # <tt>-p</tt> <i>[path]</i>:: set project path
+    #
     def exec
       package = Package.new(options[:path])
       say "Executing #{package.full_name}...", :yellow

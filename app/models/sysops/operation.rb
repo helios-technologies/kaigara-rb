@@ -1,7 +1,15 @@
 require 'open3'
 
 module Kaigara
+
+  #
+  # A script that +Sysops+ executes
+  #
   class Operation
+
+    #
+    # A proxy class for Thor
+    #
     class ThorShell
       include Thor::Base
       include Thor::Actions
@@ -16,15 +24,17 @@ module Kaigara
       @shell = ThorShell.new
       @name = File.basename(path)
       @content = File.read(path)
-      Environment.load_variables(self)
-      Environment.load_variables(@shell)
+      Environment.load_variables(self)   # We loads variables to both shell and operation classes.
+      Environment.load_variables(@shell) # So it's available from your ruby code in +operations/+ and from our DSL.
     end
 
+    # Executes operation content
     def apply!
       @shell.say "Applying #{@name}\n--------------------", :yellow
       instance_eval @content
     end
 
+    # One of the most important parts of DSL. You can use it directly in your operations.
     def execute(cmd)
       @shell.say "Running: #{cmd}", :yellow
       stdin, stdout, stderr, wait_thr = Open3.popen3({}, "bash -e")
@@ -111,6 +121,11 @@ module Kaigara
       end
     end
 
+    #
+    # Templates ERB template. You can use variables from metadata.rb in your templates.
+    # <tt>name</tt> - template name, without '.erb'
+    # <tt>-p</tt> - destination file. If you don't use it, the file renders to +/path-in-resources/+
+    #
     def template(name, target = nil)
       tpl_file = name + '.erb'
       destination = target
@@ -124,6 +139,10 @@ module Kaigara
       return destination
     end
 
+    #
+    # Renders a template, then executes the script.
+    # You should add shebang to your script.
+    #
     def script(name, path = nil)
       target = template(name, File.join( (path.nil? ? "" : path), name))
       @shell.chmod(target, 0755)
