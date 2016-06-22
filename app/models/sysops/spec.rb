@@ -1,3 +1,6 @@
+#
+# Specification for a Package (project)
+#
 class Spec
   attr_accessor :environment
   def initialize(parent)

@@ -1,7 +1,12 @@
 module Kaigara
+
+  #
+  # This class is for managing variables and configurations.
+  #
   class Environment
     attr_accessor :vars
 
+    # Loads variables to class +op+
     def self.load_variables(op)
       pkg = Package.new
       @vars = pkg.load!

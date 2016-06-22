@@ -1,4 +1,8 @@
 module Kaigara
+
+  #
+  # Base class for all plugins
+  #
   class BaseController < Thor
     include Thor::Base
     include Thor::Actions

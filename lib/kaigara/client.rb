@@ -1,4 +1,7 @@
 module Kaigara
+  #
+  # Kaigara cli
+  #
   class Client < Thor
 
     def self.exit_on_failure?
