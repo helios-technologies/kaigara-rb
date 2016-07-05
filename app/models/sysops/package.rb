@@ -49,9 +49,11 @@ module Kaigara
     end
 
     # Execute operations in the operations directory one by one
-    def run!
+    def run!(operations)
       Dir[File.join(@operations_dir, '*.rb')].each do |x|
-        execute_operation!(x)
+        if operations.empty? or operations.find { |op| x.include?(op) }
+          execute_operation!(x)
+        end
       end
     end
 
