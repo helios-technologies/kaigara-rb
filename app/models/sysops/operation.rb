@@ -122,6 +122,26 @@ module Kaigara
     end
 
     #
+    # Creates a file with the specified content
+    #
+    def file(filepath, content, opts = {overwrite: true})
+      if !opts[:overwrite] and File.exists?(filepath)
+        raise "File #{filepath} exists"
+      end
+
+      File.open(filepath, "w") do |fd|
+        fd.write(content)
+      end
+    end
+
+    #
+    # Configure the hostname of the machine
+    #
+    def hostname(hostname)
+      file("/etc/hostname", hostname)
+    end
+
+    #
     # Templates ERB template. You can use variables from metadata.rb in your templates.
     # <tt>name</tt> - template name, without '.erb'
     # <tt>-p</tt> - destination file. If you don't use it, the file renders to +/path-in-resources/+
