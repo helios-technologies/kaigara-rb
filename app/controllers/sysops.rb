@@ -45,17 +45,17 @@ module Kaigara
       exit 1
     end
 
-    desc 'exec', 'Execute a package'
+    desc 'exec [OPERATION ...]', 'Execute a package'
     method_option :path, aliases: '-p', desc: 'Project path', default: '.'
     #
     # Executes every script in +operations/+
     # <tt>-p</tt> <i>[path]</i>:: set project path
     #
-    def exec
+    def exec(*operations)
       package = Package.new(options[:path])
       say "Executing #{package.full_name}...", :yellow
       package.load!
-      package.run!
+      package.run!(operations)
     end
   end
 end

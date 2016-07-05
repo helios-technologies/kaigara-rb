@@ -42,6 +42,24 @@ describe Kaigara::Sysops do
       end
     end
 
+    context('several operations environment') do
+      it 'should execute each operation when no param is provided' do
+        File.write("operations/001_shell_echo.rb", "execute('echo hello kaigara')")
+        File.write("operations/002_shell_echo.rb", "execute('echo hello again')")
+        expect { sysops.exec }.to output(/hello kaigara/).to_stdout
+        expect { sysops.exec }.to output(/hello again/).to_stdout
+      end
+    end
+
+    context('several operations environment') do
+      it 'should execute each operation when no param is provided' do
+        File.write("operations/001_shell_echo.rb", "execute('echo hello kaigara')")
+        File.write("operations/002_shell_echo.rb", "execute('echo hello again')")
+        expect { sysops.exec("001") }.to output(/hello kaigara/).to_stdout
+        expect { sysops.exec("001") }.to_not output(/hello again/).to_stdout
+      end
+    end
+
     context('execute a multiline shell') do
       it 'should execute each operation' do
         File.write("operations/001_multi_shell_echo.rb", "execute('echo hello\necho kaigara')")
