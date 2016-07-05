@@ -12,11 +12,12 @@ module Kaigara
 
     desc 'create NAME', 'Create a new sysops project'
     #
-    # Creates an folder with kaigara project. It includes:
+    # Creates a folder with kaigara project. It includes:
     # * +operations/+ - directory for future kaigara scripts
     # * +resources/+ - directory for any sources (scripts to template, etc.)
     # * +metadata.rb+ - file where you should store all your variables (including environment)
     # * +Vagrantfile+ - if you use Vagrant, you know what is it
+    # * +Dockerfile+ - a template to generate Dockerfiles
     #
     def create(name)
       package = Package.new(name)
@@ -27,6 +28,7 @@ module Kaigara
       empty_directory(File.join(name, 'resources'))
       template('metadata.rb.erb', File.join(name, 'metadata.rb'))
       template('Vagrantfile.erb', File.join(name, 'Vagrantfile'))
+      template('Dockerfile.erb', File.join(name, 'Dockerfile'))
     end
 
     desc 'generate <name>', 'Generate a new operation'

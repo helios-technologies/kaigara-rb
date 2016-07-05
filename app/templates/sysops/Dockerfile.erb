@@ -1,0 +1,9 @@
+FROM heliostech/kaigara
+
+COPY metadata.rb /root/metadata.rb
+COPY operations /root/operations
+COPY resources /root/resources
+
+RUN kaish sysops exec
+
+WORKDIR /root
