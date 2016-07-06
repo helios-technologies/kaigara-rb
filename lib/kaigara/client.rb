@@ -11,6 +11,9 @@ module Kaigara
     desc 'sysops COMMAND ARGS', 'System operations'
     subcommand 'sysops', Sysops
 
+    desc 'docker COMMAND ARGS', 'Docker operations'
+    subcommand 'docker', Docker
+
     desc 'version', 'Kaish version'
     def version
       say VERSION

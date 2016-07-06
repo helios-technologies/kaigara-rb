@@ -8,5 +8,6 @@ require 'kaigara/base_controller'
 require 'kaigara/application'
 
 require 'controllers/sysops'
+require 'controllers/docker'
 require 'kaigara/client'
 require 'kaigara/metadata'
