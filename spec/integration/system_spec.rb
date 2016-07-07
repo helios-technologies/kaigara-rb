@@ -16,12 +16,9 @@ debian_family? do
 end
 
 redhat_family? do
-  #repo_extended
   execute("echo This is a RedHat or CentOS")
 end
 
-#package_update
-#package("htop")
 EOF
                 )
     end

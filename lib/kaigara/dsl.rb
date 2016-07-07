@@ -95,40 +95,6 @@ module Kaigara
     end
 
     #
-    # Add common additional repositories
-    #
-    def repo_extended
-      redhat_family? do
-        package("epel-release")
-        package_update
-      end
-    end
-
-    #
-    # Update the local repository cache
-    #
-    def package_update
-      if debian_family?
-        execute("apt-get update")
-      elsif redhat_family?
-        execute("yum update -y")
-      end
-    end
-
-    #
-    # Install the package depending on OS
-    #
-    def package(name, version = nil)
-      if debian_family?
-        execute("apt-get install -y #{ name }")
-      elsif redhat_family?
-        execute("yum install -y #{ name }")
-      else
-        raise "OS not supported"
-      end
-    end
-
-    #
     # Creates a file with the specified content
     #
     def file(filepath, content, opts = {overwrite: true})
