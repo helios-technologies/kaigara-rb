@@ -1,17 +1,13 @@
-require 'spec_helper'
+require_relative 'spec_helper'
 
 describe Kaigara::Sysops do
+  include TmpDirIsolation
+
   let(:sysops) { Kaigara::Sysops.new }
 
   before(:each) do
-    @src_home = Dir.pwd
     sysops.create 'testops'
     Dir.chdir 'testops'
-  end
-
-  after(:each) do
-    Dir.chdir(@src_home)
-    FileUtils.rm_r 'testops'
   end
 
   describe 'create' do
