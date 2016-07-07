@@ -35,7 +35,7 @@ module Kaigara
     # <tt>name</tt> - template name, without '.erb'
     # <tt>-p</tt> - destination file. If you don't use it, the file renders to +/path-in-resources/+
     #
-    def template(source, target)
+    def template(source, target = nil)
       Environment.load_variables(self)
       tpl_file = 'resources/' + source + '.erb'
       destination = target
