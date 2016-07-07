@@ -16,6 +16,10 @@ module Kaigara
       end
 
       def docker_run_operations
+        if options[:bulk]
+          return "RUN kaish sysops exec"
+        end
+
         docker_commands = []
         Dir.chdir("operations") do
           Dir["*"].each do |op|
@@ -27,9 +31,9 @@ module Kaigara
     end
 
     desc 'generate', 'Generate Dockerfiles'
+    method_option :bulk, type: :boolean, default: false, desc: 'All operations will be run in one RUN command to have only one Docker layer'
     #
-    # Creates an folder dockerfiles. It includes:
-    # FIXME
+    # Generate the Dockerfile from template
     #
     def generate
       unless File.exists?('Dockerfile.erb')

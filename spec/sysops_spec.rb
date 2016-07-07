@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'byebug'
 
 describe Kaigara::Sysops do
   let(:sysops_class) { Kaigara::Sysops }
@@ -49,7 +48,8 @@ describe Kaigara::Sysops do
   describe 'generate' do
     it 'creates operations' do
       sysops.generate 'print'
-      File.exist? Dir["operations/*_print.rb"].first
+      op_file = Dir["operations/*_print.rb"].first
+      expect(File).to exist(op_file)
     end
   end
 
