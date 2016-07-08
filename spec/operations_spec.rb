@@ -4,6 +4,7 @@ describe 'operations', :unit do
   include TmpDirIsolation
 
   let(:sysops_task) { Kaigara::Sysops }
+  let(:sysops) { sysops_task.new }
 
   before(:each) do
     FileUtils.cp_r(fixture("refops"), ".")
@@ -11,10 +12,22 @@ describe 'operations', :unit do
   end
 
   describe "script" do
-    it 'generate and run any script' do
+    it 'generates and runs scripts' do
       expect { sysops_task.start(["exec", "01_script"]) }.to output(/perl/).to_stdout
       expect { sysops_task.start(["exec", "01_script"]) }.to output(/bash/).to_stdout
       expect { sysops_task.start(["exec", "01_script"]) }.to output(/ruby/).to_stdout
+    end
+
+    it 'renders the template' do
+      sysops.exec
+      expect(File.read("resources/script.sh")).to match(/echo 'bash'/)
+    end
+
+    it 'makes scripts executable' do
+      sysops.exec
+      expect(File.stat('resources/script.pl').executable?).to be true
+      expect(File.stat('resources/script.rb').executable?).to be true
+      expect(File.stat('resources/script.sh').executable?).to be true
     end
   end
 

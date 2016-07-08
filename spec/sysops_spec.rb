@@ -71,36 +71,4 @@ describe Kaigara::Sysops, :unit do
     end
 
   end
-
-  describe 'script' do
-    before(:each) do
-      FileUtils.cp(fixture("refops/metadata.rb"), ".")
-      FileUtils.cp(fixture("refops/operations/01_script.rb"), "operations/")
-      FileUtils.cp(fixture("refops/resources/script.pl.erb"), "resources/")
-      FileUtils.cp(fixture("refops/resources/script.rb.erb"), "resources/")
-      FileUtils.cp(fixture("refops/resources/script.sh.erb"), "resources/")
-    end
-
-    it 'should render the template' do
-      sysops.exec
-      expect(File.read("resources/script.sh")).to match(/echo 'bash'/)
-    end
-
-    it 'should make the script executable' do
-      sysops.exec
-      expect(File.stat('resources/script.sh').executable?).to be true
-    end
-
-    it 'should execute each script' do
-      expect { sysops.exec }.to output(/perl/).to_stdout
-      expect { sysops.exec }.to output(/bash/).to_stdout
-      expect { sysops.exec }.to output(/ruby/).to_stdout
-    end
-
-    after(:each) do
-      FileUtils.rm Dir["resources/*"]
-      FileUtils.rm Dir["operations/*"]
-      FileUtils.rm "metadata.rb"
-    end
-  end
 end
