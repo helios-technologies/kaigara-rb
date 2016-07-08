@@ -1,6 +1,6 @@
 require_relative "spec_helper"
 
-describe "operations on any OS" do
+describe "operations on any OS", :integration do
   let(:sysops) { Kaigara::Sysops.new }
 
   describe 'exec' do

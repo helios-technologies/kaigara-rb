@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe Kaigara::Sysops do
+describe Kaigara::Sysops, :unit do
   include TmpDirIsolation
 
   let(:sysops) { Kaigara::Sysops.new }

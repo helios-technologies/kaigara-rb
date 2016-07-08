@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe 'operations' do
+describe 'operations', :unit do
   include TmpDirIsolation
 
   let(:sysops_task) { Kaigara::Sysops }
