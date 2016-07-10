@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Kaigara::Metadata do
+describe Kaigara::Metadata, :unit do
   before(:each) do
     @md = Kaigara::Metadata.new do |c|
       c.var = 'var'

@@ -1,12 +1,13 @@
 require_relative "spec_helper"
 
-describe "operations on any OS" do
+describe "operations on any OS", :integration do
   let(:sysops) { Kaigara::Sysops.new }
 
   describe 'exec' do
     before do
-      sysops.create 'testops'
       @old_pwd = Dir.pwd
+      Dir.chdir(KAIGARA_GEMPATH)
+      sysops.create 'testops'
       Dir.chdir 'testops'
 
       File.write("operations/001_install_packages.rb", <<EOF
@@ -15,12 +16,9 @@ debian_family? do
 end
 
 redhat_family? do
-  repo_extended
   execute("echo This is a RedHat or CentOS")
 end
 
-package_update
-package("htop")
 EOF
                 )
     end

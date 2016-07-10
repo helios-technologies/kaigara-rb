@@ -1,9 +1,10 @@
 require 'fileutils'
 require 'open3'
+require_relative '../spec_helper.rb'
+
+$: << File.join(KAIGARA_GEMPATH, 'lib')
 
 require 'kaigara'
-
-KAIGARA_GEMPATH = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
 #
 # Runs +sysops exec+ on docker container.
