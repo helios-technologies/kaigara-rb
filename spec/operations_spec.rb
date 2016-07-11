@@ -25,7 +25,7 @@ describe 'operations', :unit do
 
     it 'creates a directory if it does not exist' do
       sysops.exec
-      expect(File.read("/tmp/l1/l2/l3/l4/l5/l6/l7/deep.txt")).to match(/so deep!/)
+      expect(File.read("/tmp/l1/l2/l3/deep.txt")).to match(/deep-test/)
     end
 
     it 'makes scripts executable' do

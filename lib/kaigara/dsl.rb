@@ -39,6 +39,7 @@ module Kaigara
     #
     def template(source, target = nil)
       Environment.load_variables(self)
+      source.gsub!(/^\//,'')
       tpl_file = 'resources/' + source + '.erb'
       destination = target
       destination = "/#{source}" if destination.nil?
@@ -47,9 +48,11 @@ module Kaigara
 
       say "Rendering template #{tpl_file} to #{destination}", :yellow
 
-      dest_dir = File.join(destination.split('/')[0..-2])
+      dest_dir = File.dirname(destination)
+      content = ERB.new(File.read(tpl_file), nil, "-", "@output_buffer")
+
       FileUtils.mkdir_p(dest_dir) unless Dir.exist? dest_dir
-      File.write(destination, ERB.new(File.read(tpl_file), nil, "-", "@output_buffer").result(context))
+      File.write(destination, content.result(context))
 
       return destination
     end
