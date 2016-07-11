@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Kaigara
   module DSL
     include Thor::Base
@@ -39,11 +41,14 @@ module Kaigara
       Environment.load_variables(self)
       tpl_file = 'resources/' + source + '.erb'
       destination = target
-      destination = "/#{tpl_file}" if destination.nil?
+      destination = "/#{source}" if destination.nil?
       destination.gsub!(/\.erb$/,'')
       context = instance_eval("binding")
 
       say "Rendering template #{tpl_file} to #{destination}", :yellow
+
+      dest_dir = File.join(destination.split('/')[0..-2])
+      FileUtils.mkdir_p(dest_dir) unless Dir.exist? dest_dir
       File.write(destination, ERB.new(File.read(tpl_file), nil, "-", "@output_buffer").result(context))
 
       return destination

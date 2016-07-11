@@ -20,27 +20,32 @@ describe 'operations', :unit do
 
     it 'renders the template' do
       sysops.exec
-      expect(File.read("resources/script.sh")).to match(/echo 'bash'/)
+      expect(File.read("/tmp/script.sh")).to match(/echo 'bash'/)
+    end
+
+    it 'creates a directory if it does not exist' do
+      sysops.exec
+      expect(File.read("/tmp/l1/l2/l3/l4/l5/l6/l7/deep.txt")).to match(/so deep!/)
     end
 
     it 'makes scripts executable' do
       sysops.exec
-      expect(File.stat('resources/script.pl').executable?).to be true
-      expect(File.stat('resources/script.rb').executable?).to be true
-      expect(File.stat('resources/script.sh').executable?).to be true
+      expect(File.stat('/tmp/script.pl').executable?).to be true
+      expect(File.stat('/tmp/script.rb').executable?).to be true
+      expect(File.stat('/tmp/script.sh').executable?).to be true
     end
   end
 
   describe "template" do
     it "generate files from templates" do
       sysops_task.start(["exec", "02_template"])
-      expect(File).to exist("resources/script.pl")
-      expect(File).to exist("resources/script.rb")
-      expect(File).to exist("resources/script.sh")
+      expect(File).to exist("/tmp/script.pl")
+      expect(File).to exist("/tmp/script.rb")
+      expect(File).to exist("/tmp/script.sh")
 
-      expect(`perl resources/script.pl`).to include("perl")
-      expect(`ruby resources/script.rb`).to include("ruby")
-      expect(`bash resources/script.sh`).to include("bash")
+      expect(`perl /tmp/script.pl`).to include("perl")
+      expect(`ruby /tmp/script.rb`).to include("ruby")
+      expect(`bash /tmp/script.sh`).to include("bash")
     end
   end
 end
