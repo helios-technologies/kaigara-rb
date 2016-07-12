@@ -11,6 +11,8 @@ module Kaigara
   class Sysops < BaseController
 
     desc 'create NAME', 'Create a new sysops project'
+    method_option :docker, type: :boolean, default: true, desc: 'Add a Dockerfile template to the project'
+    method_option :vagrant, type: :boolean, default: true, desc: 'Add a Vagrantfile to the project'
     #
     # Creates a folder with kaigara project. It includes:
     # * +operations/+ - directory for future kaigara scripts
@@ -27,8 +29,14 @@ module Kaigara
       empty_directory(File.join(name, 'operations'))
       empty_directory(File.join(name, 'resources'))
       template('metadata.rb.erb', File.join(name, 'metadata.rb'))
-      template('Vagrantfile.erb', File.join(name, 'Vagrantfile'))
-      template('Dockerfile.erb', File.join(name, 'Dockerfile'))
+
+      if options[:vagrant]
+        template('Vagrantfile.erb', File.join(name, 'Vagrantfile'))
+      end
+
+      if options[:docker]
+        template('Dockerfile.erb.erb', File.join(name, 'Dockerfile.erb'))
+      end
     end
 
     desc 'generate <name>', 'Generate a new operation'

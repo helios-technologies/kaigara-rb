@@ -3,23 +3,49 @@ require_relative 'spec_helper'
 describe Kaigara::Sysops, :unit do
   include TmpDirIsolation
 
-  let(:sysops) { Kaigara::Sysops.new }
+  let(:sysops_class) { Kaigara::Sysops }
+  let(:sysops) { sysops_class.new }
+  let(:create_params) { [] }
 
   before(:each) do
-    sysops.create 'testops'
+    sysops_class.start(['create', 'testops' ] + create_params)
     Dir.chdir 'testops'
   end
 
   describe 'create' do
-    it 'creates basic project' do
-      expect(Dir['*']).to include("operations", "resources", "Vagrantfile", "metadata.rb")
+    context("default params") do
+      it 'creates basic project' do
+        root_files = Dir['*']
+        expect(root_files).to include("operations", "resources", "Vagrantfile", "metadata.rb", "Dockerfile.erb")
+      end
+    end
+
+    context("--docker --no-vagrant") do
+      let(:create_params) { ["--docker", "--no-vagrant"] }
+
+      it 'creates project with Dockerfile.erb' do
+        root_files = Dir['*']
+        expect(root_files).to include("operations", "resources", "metadata.rb", "Dockerfile.erb")
+        expect(root_files).to_not include("Vagrantfile")
+      end
+    end
+
+    context("--no-docker --vagrant") do
+      let(:create_params) { ["--no-docker", "--vagrant"] }
+
+      it 'creates project with Vagrantfile' do
+        root_files = Dir['*']
+        expect(root_files).to include("operations", "resources", "metadata.rb", "Vagrantfile")
+        expect(root_files).to_not include("Dockerfile.erb")
+      end
     end
   end
 
   describe 'generate' do
     it 'creates operations' do
       sysops.generate 'print'
-      File.exist? Dir["operations/*_print.rb"].first
+      op_file = Dir["operations/*_print.rb"].first
+      expect(File).to exist(op_file)
     end
   end
 
