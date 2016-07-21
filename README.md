@@ -20,6 +20,15 @@ Or install it yourself as:
 
     $ gem install kaigara
 
+On bare systems:
+```
+bash <(curl -s https://raw.githubusercontent.com/kaigara-sysops/vagrant-devbox/master/scripts/kairb.sh)
+```
+or
+```
+curl -s https://raw.githubusercontent.com/kaigara-sysops/vagrant-devbox/master/scripts/kairb.sh | bash -s
+```
+
 ## Usage
 
 Basic commands are
