@@ -1,5 +1,7 @@
 # Kaigara
 
+! This was a prototype now implemented in go : [kaigara repo](http://github.com/mod/kaigara) and [Kaigara web](http://www.kaigara.org)
+
 [![Build Status](https://travis-ci.org/helios-technologies/kaigara.svg?branch=master)](https://travis-ci.org/helios-technologies/kaigara) [![Gem Version](https://badge.fury.io/rb/kaigara.svg)](https://badge.fury.io/rb/kaigara)
 
 Kaigara is an extendable shell command line for managing simple devops tasks.
