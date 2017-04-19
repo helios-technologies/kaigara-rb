@@ -44,8 +44,9 @@ module Kaigara
 
     # Create an empty operation in ./operations
     def operation_name(name)
-      ts = DateTime.now.strftime('%Y%m%d%H%M%S')
-      return "%s_%s.rb" % [ts, name]
+      prefix = '01' if Dir[File.join(@operations_dir, '*.rb')].empty?
+      prefix ||= Dir[File.join(@operations_dir, '*.rb')].sort.last.split('/').last.split('_').first.next
+      return "%s_%s.rb" % [prefix, name]
     end
 
     # Execute operations in the operations directory one by one
